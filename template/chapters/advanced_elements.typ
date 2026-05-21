@@ -40,7 +40,7 @@ Similar to images you can insert table figures. See more table examples and more
 
 === Code Snippets
 
-This template uses #link("https://typst.app/universe/package/codly")[Codly] for code snippets. Look at their documentation on how to further customize and control your code blocks.
+This template uses #link("https://typst.app/universe/package/zebraw")[Zebraw] for code snippets. Look at their documentation on how to further customize and control your code blocks.
 
 Code blocks can be created using three backticks:
 
