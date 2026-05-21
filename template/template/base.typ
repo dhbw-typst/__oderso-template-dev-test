@@ -189,7 +189,7 @@
 
   // fancy code blocks
   // if you don't like them, just remove this section.
-  show: zebraw.with(lang: false)
+  show: zebraw.with(lang: false, hanging-indent: true)
 
   show figure.where(kind: raw): set figure(supplement: "Code")
 
