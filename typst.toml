@@ -2,7 +2,7 @@
 compiler = "0.14.0" # TODO: check
 name = "dhbw-oderso"
 version = "2.0.1"
-entrypoint = "template/lib.typ"
+entrypoint = "lib.typ"
 authors = ["dhbw-typst"]
 license = "MIT"
 description = "All kinds of theses at DHBW"
