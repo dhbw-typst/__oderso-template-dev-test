@@ -85,6 +85,7 @@
   /// `position` ("preamble", "postamble", or "after-confidentiality-clause"). -> dictionary
   ai-declaration-form-data: (
     module-name: none,
+    semester: none,
     exam-type: none,
     product-name: none,
     topic: none,
@@ -250,13 +251,14 @@
 
   let ai-tools-declaration = ai-declaration-form(
     digital: digital-only,
-    name: main-author.firstname + " " + main-author.lastname,
+    name: main-author.lastname + ", " + main-author.firstname,
     identification-number: main-author.matriculation-number,
     address: main-author.address,
     course: main-author.course,
     email: main-author.email,
     mobile-number: main-author.phone-number,
     module-name: ai-declaration-form-data.module-name,
+    semester: ai-declaration-form-data.semester,
     module-submission-date: module-submission-date,
     exam-type: ai-declaration-form-data.exam-type,
     product-name: ai-declaration-form-data.product-name,
