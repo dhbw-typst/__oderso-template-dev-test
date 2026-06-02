@@ -5,7 +5,10 @@
 #import "../template/lib.typ": tablefigure
 #import "../template/utils.typ": __linguify-content
 
-#show raw.where(lang: "pintora"): it => pintorita.render(it.text, style="dark")
+#show raw.where(lang: "pintora"): it => pintorita.render(
+  it.text,
+  style = "dark",
+)
 
 #let diagram-preview(caption, typst-code, content) = tablefigure(
   caption: caption,
@@ -74,7 +77,10 @@
 sequenceDiagram
   Alice-->>Bob: Shared Secret
 ```",
-  pintorita.render("sequenceDiagram\n  Alice-->>Bob: Shared Secret", style: "light"),
+  pintorita.render(
+    "sequenceDiagram\n  Alice-->>Bob: Shared Secret",
+    style: "light",
+  ),
 )
 
 #pagebreak()
