@@ -125,3 +125,25 @@ as-part-of-examination-ihk = Im Rahmen der
 in-the-training-occupation = des Ausbildungsberufes
 examinee-number = Prüflingsnummer
 confidentiality-agreement-note-ihk = Der Inhalt dieser Arbeit darf weder als Ganzes noch in Auszügen Personen außerhalb des Prüfungsprozesses und des Evaluationsverfahrens zugänglich gemacht werden, sofern keine anderslautende Genehmigung des Ausbildungsbetriebes vorliegt.
+
+### Reference Diagrams chapter
+diagrams-heading = Diagramme und Datenvisualisierung
+diagrams-intro = Dieses Kapitel ist vollständig optional und dient nur als Referenz. Es zeigt verschiedene Typst-Bibliotheken, die du für Diagramme und Visualisierungen in deiner Arbeit verwenden kannst. Du kannst es deaktivieren, indem du den entsprechenden Include in deiner Main-Datei auskommentierst.
+diagrams-workflows-heading = Flussdiagramme und Graphen
+diagrams-workflows-text = Mit der #link("https://typst.app/universe/package/fletcher", "Fletcher")-Bibliothek kannst du Workflows und Graphen visualisieren.
+diagrams-graphs-heading = Graphendiagramme
+diagrams-graphs-text = Fletcher unterstützt auch das Zeichnen von Graphen mit Knoten in kreisförmigen oder benutzerdefinierten Anordnungen.
+diagrams-cs-heading = Informatik-Diagramme
+diagrams-cs-text = Für Sequenzdiagramme, Komponentendiagramme und mehr nutze die #link("https://typst.app/universe/package/pintorita", "Pintorita")-Bibliothek, die Diagramme in Pintora-Notation rendert. Die verfügbaren Diagrammtypen findest du in der #link("https://pintorajs.vercel.app/docs/intro/", "Pintora-Dokumentation"). Diagramme lassen sich im #link("https://pintorajs.vercel.app/demo/live-editor?#/editor", "Live-Editor") interaktiv testen.
+diagrams-data-heading = Datendiagramme
+diagrams-data-text = Für Balkendiagramme, Liniendiagramme und weitere Datenvisualisierungen kannst du die #link("https://typst.app/universe/package/primaviz", "Primaviz")-Bibliothek verwenden.
+
+# diagram-preview Beschriftungen und Tabellenkopf
+diagrams-code-column = Typst-Code
+diagrams-output-column = Ausgabe
+diagrams-caption-flowchart = Flussdiagramm mit Fletcher
+diagrams-caption-graph = Kreisförmiges Graphenlayout mit Fletcher
+diagrams-caption-component = Komponentendiagramm mit Pintorita
+diagrams-caption-sequence = Sequenzdiagramm mit Pintorita
+diagrams-caption-bar = Balkendiagramm mit Primaviz
+diagrams-caption-multi-line = Liniendiagramme mit eigenen Farben

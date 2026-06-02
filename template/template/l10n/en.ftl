@@ -126,3 +126,25 @@ as-part-of-examination-ihk = as part of the
 in-the-training-occupation = in the training occupation
 examinee-number = Examinee Number
 confidentiality-agreement-note-ihk = The contents of this work may not be made accessible, in whole or in part, to persons outside the examination process and the evaluation procedure, unless otherwise authorized by the Training Company.
+
+### Reference Diagrams chapter
+diagrams-heading = Diagrams and Data Visualization
+diagrams-intro = This chapter is completely optional and only serves as a reference. It showcases several Typst libraries you can use to create diagrams and visualizations in your thesis. You can disable it by commenting out the corresponding include in your main file.
+diagrams-workflows-heading = Flowcharts and Node Diagrams
+diagrams-workflows-text = You can visualize workflows and node graphs using the #link("https://typst.app/universe/package/fletcher", "Fletcher") library.
+diagrams-graphs-heading = Graph Diagrams
+diagrams-graphs-text = Fletcher also supports drawing graphs with nodes arranged in circular or custom layouts.
+diagrams-cs-heading = Computer Science Diagrams
+diagrams-cs-text = For sequence diagrams, component diagrams, and more, you can use the #link("https://typst.app/universe/package/pintorita", "Pintorita") library, which renders diagrams using Pintora notation. See the #link("https://pintorajs.vercel.app/docs/intro/", "Pintora documentation") for available diagram types and the #link("https://pintorajs.vercel.app/demo/live-editor?#/editor", "live editor") to prototype diagrams interactively.
+diagrams-data-heading = Data Plots
+diagrams-data-text = For bar charts, line charts, and other data visualizations, you can use the #link("https://typst.app/universe/package/primaviz", "Primaviz") library.
+
+# diagram-preview captions and table header
+diagrams-code-column = Typst Code
+diagrams-output-column = Output
+diagrams-caption-flowchart = Flowchart with Fletcher
+diagrams-caption-graph = Circular graph layout with Fletcher
+diagrams-caption-component = Component diagram with Pintorita
+diagrams-caption-sequence = Sequence diagram with Pintorita
+diagrams-caption-bar = Bar chart with Primaviz
+diagrams-caption-multi-line = Multi-series line chart with custom colors
