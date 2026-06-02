@@ -1,0 +1,6 @@
+{
+    "subsystems": {
+    "labels": ["net", "fs", "drivers", "mm", "arch", "kernel"],
+    "values": [4820, 3150, 8930, 2710, 2340, 1890]
+    }
+}

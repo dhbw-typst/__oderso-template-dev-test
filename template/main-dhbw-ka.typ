@@ -138,4 +138,5 @@
 #include "chapters/advanced_elements.typ"
 #include "chapters/references_citations.typ"
 #include "chapters/reference_management.typ"
+#include "chapters/reference_diagrams.typ" // just comment this line if you don't need example diagrams
 #include "chapters/conclusion.typ"
