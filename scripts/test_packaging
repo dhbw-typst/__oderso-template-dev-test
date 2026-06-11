@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# Move package to local folder
-cp -r template/template/* ~/Library/Application\ Support/typst/packages/local/dhbw-oderso/2.0.1
-cp -r typst.toml ~/Library/Application\ Support/typst/packages/local/dhbw-oderso/2.0.1
