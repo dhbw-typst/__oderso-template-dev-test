@@ -1,11 +1,11 @@
-name: Package Check
+name: Packaged Compile Check
 on:
   pull_request:
   workflow_dispatch:
 
 jobs:
   package_check:
-    name: Run Typst Package Check
+    name: Check compile packaged
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -13,20 +13,8 @@ jobs:
 
       - name: Install typst
         uses: typst-community/setup-typst@63ac138db421d586de61f7f5ac3bcef6a2e6c78c # v5.1.0
-
-      - name: Replace placeholders in .typ files
-        run: |
-          VERSION=$(yq -p toml -oy '.package.version' typst.toml)
-          find \
-            template/abstracts \
-            template/assets \
-            template/chapters \
-            template/glossary.typ \
-            template/main-dhbw-ka.typ \
-            template/main-dhbw-ma.typ \
-            template/main-ihk.typ \
-            -name "*.typ" \
-            -exec sed -i -E 's|#import "[./]*(template/)?lib\.typ"|#import "@local/dhbw-oderso:'"${VERSION}"'"|g' {} +
+        with:
+          typst-version: 0.14.2
 
       - name: Install package locally
         run: |
@@ -55,11 +43,22 @@ jobs:
             -a template/LICENSE \
             -a template/README.md
 
-      - name: Run typst-package-check
+      - name: Restore template files
+        run: git restore template/
+
+      - name: Replace lib imports with @local
         run: |
-          PKG_NAME=$(yq -p toml -oy '.package.name' typst.toml)
-          PKG_VERSION=$(yq -p toml -oy '.package.version' typst.toml)
-          PKG_BASE=$(typst info -f json | jq -r '.packages["package-path"]')
-          docker run --rm \
-            -v "${PKG_BASE}/local/${PKG_NAME}/${PKG_VERSION}:/data" \
-            ghcr.io/typst/package-check check
+          ./scripts/replace_imports.sh --local \
+            template/abstracts \
+            template/assets \
+            template/chapters \
+            template/glossary.typ \
+            template/main-dhbw-ka.typ \
+            template/main-dhbw-ma.typ \
+            template/main-ihk.typ
+
+      - name: Check build with newest supported Typst version
+        run: |
+          typst compile template/main-dhbw-ka.typ
+          typst compile template/main-dhbw-ma.typ
+          typst compile template/main-ihk.typ
