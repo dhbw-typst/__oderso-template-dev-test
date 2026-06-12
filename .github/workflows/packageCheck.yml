@@ -1,0 +1,65 @@
+name: Package Check
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  package_check:
+    name: Run Typst Package Check
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Install typst
+        uses: typst-community/setup-typst@63ac138db421d586de61f7f5ac3bcef6a2e6c78c # v5.1.0
+
+      - name: Replace placeholders in .typ files
+        run: |
+          VERSION=$(yq -p toml -oy '.package.version' typst.toml)
+          find \
+            template/abstracts \
+            template/assets \
+            template/chapters \
+            template/glossary.typ \
+            template/main-dhbw-ka.typ \
+            template/main-dhbw-ma.typ \
+            template/main-ihk.typ \
+            -name "*.typ" \
+            -exec sed -i -E 's|#import "[./]*(template/)?lib\.typ"|#import "@local/dhbw-oderso:'"${VERSION}"'"|g' {} +
+
+      - name: Install package locally
+        run: |
+          ./scripts/package_template.sh \
+            \
+            -p template/template/assets \
+            -p template/template/base.typ \
+            -p template/template/dhbw-ka.typ \
+            -p template/template/dhbw-ma.typ \
+            -p template/template/ihk.typ \
+            -p template/template/l10n \
+            -p template/template/lib.typ \
+            -p template/template/utils.typ \
+            \
+            -e template/abstracts \
+            -e template/assets \
+            -e template/chapters \
+            -e template/glossary.typ \
+            -e template/main-dhbw-ka.typ \
+            -e template/main-dhbw-ma.typ \
+            -e template/main-ihk.typ \
+            -e template/refs.bib \
+            \
+            -a thumbnail.png \
+            -a typst.toml \
+            -a template/LICENSE \
+            -a template/README.md
+
+      - name: Run typst-package-check
+        run: |
+          PKG_NAME=$(yq -p toml -oy '.package.name' typst.toml)
+          PKG_VERSION=$(yq -p toml -oy '.package.version' typst.toml)
+          PKG_BASE=$(typst info -f json | jq -r '.packages["package-path"]')
+          docker run --rm \
+            -v "${PKG_BASE}/local/${PKG_NAME}/${PKG_VERSION}:/data" \
+            ghcr.io/typst/package-check check
