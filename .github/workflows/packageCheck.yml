@@ -27,6 +27,10 @@ jobs:
         with:
           typst-version: 0.14.2
 
+      - name: Fetch all @preview packages for package-check
+        run: |
+          typst compile --format pdf template/main-dhbw-ka.typ /dev/null
+
       - name: Install package locally
         run: ./scripts/package_template.sh
 
