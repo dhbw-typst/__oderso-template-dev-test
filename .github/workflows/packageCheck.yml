@@ -19,11 +19,6 @@ jobs:
         with:
           path: "./repo"
 
-      - name: Install nix
-        uses: cachix/install-nix-action@v31
-        with:
-          extra_nix_config: "experimental-features = nix-command flakes"
-
       - name: Install typst
         uses: typst-community/setup-typst@63ac138db421d586de61f7f5ac3bcef6a2e6c78c # v5.1.0
         with:
@@ -38,5 +33,4 @@ jobs:
         working-directory: ./repo
 
       - name: Run package check
-        run: nix run github:typst/package-check -- check
-        working-directory: ./package
+        run: docker run -v ./package:/data ghcr.io/typst/package-check check
