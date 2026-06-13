@@ -33,4 +33,5 @@ jobs:
         working-directory: ./repo
 
       - name: Run package check
-        run: docker run -v ./package:/data ghcr.io/typst/package-check check
+        # PACKAGE_DIR is set in package_template.sh
+        run: docker run -v ${{ env.PACKAGE_DIR }}:/data ghcr.io/typst/package-check check
