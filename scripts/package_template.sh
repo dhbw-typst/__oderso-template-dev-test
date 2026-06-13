@@ -93,6 +93,12 @@ if [[ -z "$TARGET_DIR" ]]; then
     TARGET_DIR="${PKG_PATH}/local"
 fi
 
+# Always resolve TARGET_DIR to an absolute path so PACKAGE_DIR (and any consumer
+# of it, e.g. GitHub Actions) gets a stable, location-independent path.
+if [[ "$TARGET_DIR" != /* ]]; then
+    TARGET_DIR="$PWD/$TARGET_DIR"
+fi
+
 PKG_NAME=$(read_pkg_field name)
 PKG_VERSION=$(read_pkg_field version)
 
