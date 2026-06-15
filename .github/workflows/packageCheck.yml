@@ -35,4 +35,4 @@ jobs:
 
       - name: Run package check
         # TARGET_DIR, PKG_NAME, and PKG_VERSION are set in package_template.sh
-        run: docker run -v ${{ env.TARGET_DIR }}:/data/preview ghcr.io/typst/package-check check "@preview/${{ env.PKG_NAME }}:${{ env.PKG_VERSION }}"
+        run: docker run -v ${{ env.TARGET_DIR }}:/packages/preview ghcr.io/typst/package-check check "@preview/${{ env.PKG_NAME }}:${{ env.PKG_VERSION }}"
