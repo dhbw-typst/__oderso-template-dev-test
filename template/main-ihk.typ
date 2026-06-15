@@ -17,7 +17,7 @@
       firstname: "John",
       lastname: "Doe",
       examinee-number: "(000)-0000",
-      signature: image("assets/example-signature.png"),
+      signature: image("assets/signature.png"),
     ), // make sure to keep this comma after the first author if there is only one author!
     (
       firstname: "Erika",
@@ -36,7 +36,7 @@
   // )
   // remove property to remove appendices
   acknowledgements: (
-    include "front-matter/acknowledgements.typ"
+    include "misc/acknowledgements.typ"
   ),
 
   // appendices: usage: (
@@ -59,7 +59,7 @@
     (
       title: "Table Examples",
       reference: "appendix-table-examples",
-      content: include "assets/example-tables.typ",
+      content: include "appendix/tables.typ",
     ), // appendix from file
   ),
 
