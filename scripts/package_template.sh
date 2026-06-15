@@ -89,8 +89,13 @@ read_pkg_field() {
 }
 
 if [[ -z "$TARGET_DIR" ]]; then
-    PKG_PATH=$(typst info -f json 2>/dev/null | jq -r '.packages["package-path"]')
-    TARGET_DIR="${PKG_PATH}/local"
+    if [[ "$PREVIEW" -eq 1 ]]; then
+        PKG_PATH=$(typst info -f json 2>/dev/null | jq -r '.packages["package-cache-path"]')
+        TARGET_DIR="${PKG_PATH}/preview"
+    else
+        PKG_PATH=$(typst info -f json 2>/dev/null | jq -r '.packages["package-path"]')
+        TARGET_DIR="${PKG_PATH}/local"
+    fi
 fi
 
 # Always resolve TARGET_DIR to an absolute path so PACKAGE_DIR (and any consumer
@@ -105,6 +110,9 @@ PKG_VERSION=$(read_pkg_field version)
 BASE="${TARGET_DIR}/${PKG_NAME}/${PKG_VERSION}"
 
 echo "PACKAGE_DIR=$BASE" >> "${GITHUB_ENV:-/dev/null}"
+echo "TARGET_DIR"="$TARGET_DIR" >> "${GITHUB_ENV:-/dev/null}"
+echo "PKG_NAME=$PKG_NAME" >> "${GITHUB_ENV:-/dev/null}"
+echo "PKG_VERSION=$PKG_VERSION" >> "${GITHUB_ENV:-/dev/null}"
 echo "Installing to: $BASE"
 echo "Import namespace: @${IMPORT_NAMESPACE}"
 

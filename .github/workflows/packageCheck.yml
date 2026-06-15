@@ -29,9 +29,10 @@ jobs:
           typst compile --format pdf repo/template/main-dhbw-ka.typ /dev/null
 
       - name: Install package locally
-        run: ./scripts/package_template.sh -t ../package
+        # Install package in preview cache folder
+        run: ./scripts/package_template.sh -p
         working-directory: ./repo
 
       - name: Run package check
-        # PACKAGE_DIR is set in package_template.sh
-        run: docker run -v ${{ env.PACKAGE_DIR }}:/data ghcr.io/typst/package-check check
+        # TARGET_DIR, PKG_NAME, and PKG_VERSION are set in package_template.sh
+        run: docker run -v ${{ env.TARGET_DIR }}:/data/preview ghcr.io/typst/package-check check "@preview/${{ env.PKG_NAME }}:${{ env.PKG_VERSION }}"
