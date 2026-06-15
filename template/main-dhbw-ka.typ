@@ -71,7 +71,7 @@
   // )
   // remove property to remove appendices
   acknowledgements: (
-    include "misc/acknowledgements.typ"
+    include "misc/acknowledgments.typ"
   ),
 
   // abstracs: usage: (language, language (displayed), content)
