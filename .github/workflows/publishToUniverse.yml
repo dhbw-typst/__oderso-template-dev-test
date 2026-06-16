@@ -13,9 +13,18 @@ permissions:
   contents: read
 
 env:
-  UPSTREAM_REPO: typst/packages
-  UPSTREAM_BRANCH: main
+  # --- Production target (typst universe) -----------------------------------
+  # Uncomment these (and comment the testing block below) to publish for real.
+  # UPSTREAM_REPO: typst/packages
+  # UPSTREAM_BRANCH: main
+  # --- Testing target -------------------------------------------------------
+  # While iterating on this workflow we open the PR against a long-lived
+  # `test-base` branch on the fork itself, so nothing leaks to typst/packages.
+  UPSTREAM_REPO: dhbw-typst/typst-universe-packages
+  UPSTREAM_BRANCH: test-base
+  # --------------------------------------------------------------------------
   FORK_REPO: dhbw-typst/typst-universe-packages
+  FORK_SYNC_BRANCH: main
   TEMPLATE_REPO: ${{ github.repository }}
   CORE_TEAM_ORG: dhbw-typst
   CORE_TEAM_SLUG: core
@@ -83,18 +92,40 @@ jobs:
           git config user.name  "dhbw-typst-automation[bot]"
           git config user.email "279977597+dhbw-typst-automation@users.noreply.github.com"
 
-      - name: Force-sync fork to upstream
+      - name: Force-sync fork main to typst/packages main
         working-directory: packages
         env:
           GH_TOKEN: ${{ secrets.BOT_PAT }}
         run: |
           set -euo pipefail
-          git remote add upstream "https://github.com/${UPSTREAM_REPO}.git"
-          git fetch upstream "$UPSTREAM_BRANCH"
-          # Reset local main to upstream main and force-push to the fork's main.
-          git checkout -B "$UPSTREAM_BRANCH" "upstream/${UPSTREAM_BRANCH}"
-          git push --force origin "$UPSTREAM_BRANCH"
-          echo "Fork ${FORK_REPO} synced to ${UPSTREAM_REPO}@${UPSTREAM_BRANCH}."
+          # Always sync the fork's `main` from the real upstream so the fork
+          # never drifts. In production the PR is then opened against this
+          # synced `main`; in testing it is opened against `test-base` on the
+          # fork (see the next step).
+          REAL_UPSTREAM="typst/packages"
+          REAL_UPSTREAM_BRANCH="main"
+          git remote add upstream "https://github.com/${REAL_UPSTREAM}.git"
+          git fetch upstream "$REAL_UPSTREAM_BRANCH"
+          git checkout -B "$FORK_SYNC_BRANCH" "upstream/${REAL_UPSTREAM_BRANCH}"
+          git push --force origin "$FORK_SYNC_BRANCH"
+          echo "Fork ${FORK_REPO}@${FORK_SYNC_BRANCH} synced to ${REAL_UPSTREAM}@${REAL_UPSTREAM_BRANCH}."
+
+      - name: Ensure test base branch exists on fork
+        # TESTING ONLY: makes sure `${UPSTREAM_BRANCH}` (e.g. test-base) exists
+        # on the fork as a stable PR target. Remove this step when switching
+        # back to the production upstream (typst/packages).
+        if: env.UPSTREAM_REPO == env.FORK_REPO
+        working-directory: packages
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --heads origin "$UPSTREAM_BRANCH" >/dev/null 2>&1; then
+            echo "Test base branch '${UPSTREAM_BRANCH}' already exists on ${FORK_REPO}."
+          else
+            echo "Creating test base branch '${UPSTREAM_BRANCH}' on ${FORK_REPO} from ${FORK_SYNC_BRANCH}."
+            git push origin "${FORK_SYNC_BRANCH}:refs/heads/${UPSTREAM_BRANCH}"
+          fi
 
       - name: Package template into fork
         working-directory: template
@@ -124,8 +155,14 @@ jobs:
           BRANCH: ${{ steps.branch.outputs.name }}
         run: |
           set -euo pipefail
-          git checkout -B "$BRANCH"
+          # Base the feature branch on the PR target branch so the diff is
+          # exactly the package addition. In production that's the freshly
+          # synced `main`; in testing it's `test-base` on the fork.
+          git fetch origin "$UPSTREAM_BRANCH"
+          git checkout -B "$BRANCH" "origin/${UPSTREAM_BRANCH}"
 
+          # Re-stage the working-tree files produced by package_template.sh
+          # in the previous step (they are still present in the workdir).
           git add -A
           if git diff --cached --quiet; then
             echo "::error::No package files were staged. package_template.sh produced no changes."
