@@ -106,15 +106,6 @@ jobs:
           echo "Found PR #${pr_number} for commit ${{ github.sha }}"
           echo "pr_number=${pr_number}" >> "$GITHUB_OUTPUT"
 
-  extract_release_notes:
-    name: Extract release notes
-    needs: prepare_release
-    if: needs.prepare_release.outputs.hasNextVersion == 'true'
-    uses: ./.github/workflows/extractReleaseNotes.yml
-    with:
-      pr_number: ${{ needs.prepare_release.outputs.pr_number }}
-      fail_if_missing: true
-
   bump_version:
     name: Bump version, regenerate thumbnail and tag
     needs:
@@ -168,7 +159,6 @@ jobs:
     name: Create Release in Dev and Prod
     needs:
       - prepare_release
-      - extract_release_notes
       - bump_version
     if: needs.prepare_release.outputs.hasNextVersion == 'true'
     runs-on: ubuntu-24.04
@@ -201,14 +191,14 @@ jobs:
             template/main-*.pdf
             documentation.pdf
           tag_name: ${{ needs.prepare_release.outputs.version }}
-          body: ${{ needs.extract_release_notes.outputs.release_notes }}
-      - name: Release prod repo
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
-        with:
-          token: ${{ secrets.BOT_PAT }}
-          files: |
-            template/main-*.pdf
-            documentation.pdf
-          tag_name: ${{ needs.prepare_release.outputs.version }}
-          repository: dhbw-typst/oderso-template
-          body: ${{ needs.extract_release_notes.outputs.release_notes }}
+          body: "Test release body"
+      # - name: Release prod repo
+      #   uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+      #   with:
+      #     token: ${{ secrets.BOT_PAT }}
+      #     files: |
+      #       template/main-*.pdf
+      #       documentation.pdf
+      #     tag_name: ${{ needs.prepare_release.outputs.version }}
+      #     repository: dhbw-typst/oderso-template
+      #     body: "Test release body"
