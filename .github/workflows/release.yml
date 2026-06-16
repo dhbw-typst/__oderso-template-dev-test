@@ -39,35 +39,35 @@ jobs:
         if: steps.check_changes.outputs.template_changed == 'false'
         run: |
           echo "No changes in template detected. Skipping sync and release."
-      - name: Checkout `template`
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-        if: steps.check_changes.outputs.template_changed == 'true'
-        with:
-          fetch-depth: 0
-          path: template
-          repository: dhbw-typst/oderso-template
-          token: ${{ secrets.BOT_PAT }}
-      - name: Install `git-filter-repo`
-        if: steps.check_changes.outputs.template_changed == 'true'
-        working-directory: /tmp
-        run: |
-          curl -L https://github.com/newren/git-filter-repo/releases/download/v2.47.0/git-filter-repo-2.47.0.tar.xz -o git-filter-repo.tar.xz
-          tar -xvf git-filter-repo.tar.xz
+      # - name: Checkout `template`
+      #   uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      #   if: steps.check_changes.outputs.template_changed == 'true'
+      #   with:
+      #     fetch-depth: 0
+      #     path: template
+      #     repository: dhbw-typst/oderso-template
+      #     token: ${{ secrets.BOT_PAT }}
+      # - name: Install `git-filter-repo`
+      #   if: steps.check_changes.outputs.template_changed == 'true'
+      #   working-directory: /tmp
+      #   run: |
+      #     curl -L https://github.com/newren/git-filter-repo/releases/download/v2.47.0/git-filter-repo-2.47.0.tar.xz -o git-filter-repo.tar.xz
+      #     tar -xvf git-filter-repo.tar.xz
 
-          /tmp/git-filter-repo*/git-filter-repo --version
-      - name: Set git user
-        if: steps.check_changes.outputs.template_changed == 'true'
-        run: |
-          git config --global user.name "dhbw-typst-automation[bot]"
-          git config --global user.email "dhbw-typst-automation[bot] <279977597+dhbw-typst-automation@users.noreply.github.com>"
-      - name: Synchronize template files
-        if: steps.check_changes.outputs.template_changed == 'true'
-        run: /tmp/git-filter-repo*/git-filter-repo --source ./template-dev --target ./template --subdirectory-filter template/
-      - name: Push changes
-        if: steps.check_changes.outputs.template_changed == 'true'
-        working-directory: template
-        run: |
-          git push --force
+      #     /tmp/git-filter-repo*/git-filter-repo --version
+      # - name: Set git user
+      #   if: steps.check_changes.outputs.template_changed == 'true'
+      #   run: |
+      #     git config --global user.name "dhbw-typst-automation[bot]"
+      #     git config --global user.email "dhbw-typst-automation[bot] <279977597+dhbw-typst-automation@users.noreply.github.com>"
+      # - name: Synchronize template files
+      #   if: steps.check_changes.outputs.template_changed == 'true'
+      #   run: /tmp/git-filter-repo*/git-filter-repo --source ./template-dev --target ./template --subdirectory-filter template/
+      # - name: Push changes
+      #   if: steps.check_changes.outputs.template_changed == 'true'
+      #   working-directory: template
+      #   run: |
+      #     git push --force
 
   prepare_release:
     name: Prepare release metadata
