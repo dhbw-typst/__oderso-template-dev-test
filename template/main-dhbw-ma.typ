@@ -27,7 +27,7 @@
 
   authors: (
     (
-      firstname: "John",
+      firstname: "Johnny",
       lastname: "Doe",
       matriculation-number: "0000000",
       course: "TINF23B2",
